@@ -11,7 +11,7 @@
 - Provides a way to cancel ongoing requests
 - Accepts URLRequest as input
 
-##Availability
+## Availability
 
 Works with iOS 13+
 
