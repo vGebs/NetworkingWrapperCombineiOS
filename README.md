@@ -7,7 +7,6 @@
 - Supports GET, POST, PUT, PATCH and DELETE HTTP methods
 - Automatically handles JSON decoding and encoding
 - Provides a convenient way to handle errors
-- Allows for setting timeout
 - Provides a way to cancel ongoing requests
 - Accepts URLRequest as input
 
