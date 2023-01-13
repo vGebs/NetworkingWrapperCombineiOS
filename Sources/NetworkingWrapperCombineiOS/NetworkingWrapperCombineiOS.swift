@@ -1,23 +1,20 @@
 import Foundation
 import Combine
 
-public enum NetworkError: Error {
-    case invalidURL
-    case invalidResponse
-    case statusCode(Int)
-    case decodingError
-    case unexpectedError(Error)
-}
-
 @available(iOS 13.0, *)
 public class NetworkWrapperCombine {
-    private let session: URLSession
-    public var timeout: TimeInterval = 60 // default timeout of 60 seconds
+    public enum NetworkError: Error {
+        case invalidURL
+        case invalidResponse
+        case statusCode(Int)
+        case decodingError
+        case unexpectedError(Error)
+    }
     
-    public init(timeout: TimeInterval) {
-        let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = timeout
-        self.session = URLSession(configuration: configuration)
+    private let session: URLSession
+    
+    public init(session: URLSession = .shared) {
+        self.session = session
     }
     
     public func request<T: Decodable>(with urlRequest: URLRequest) -> AnyPublisher<T, Error> {

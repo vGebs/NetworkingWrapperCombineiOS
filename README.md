@@ -32,7 +32,7 @@ To use `NetworkWrapperCombineiOS`, you first need to create an instance of the N
 
 ```swift
 import NetworkWrapperCombineiOS
-let networkWrapper = NetworkWrapperCombine(timeout: 20)
+let networkWrapper = NetworkWrapperCombine()
 ```
 
 You can then use the `request(with:)` method to make a request. This method returns a Publisher that you can subscribe to.
@@ -59,13 +59,6 @@ You can cancel a request by calling the cancel() method on the returned AnyCance
 
 ```swift
 cancellable.cancel()
-```
-
-You can also set the timeout of the requests (in seconds, set to 15 by default)
-
-```swift
-let networkWrapper = NetworkWrapperCombine(timeout: 20)
-networkWrapper.timeout = 10
 ```
 
 ## Error Handling

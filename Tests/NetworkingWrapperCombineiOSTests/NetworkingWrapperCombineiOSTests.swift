@@ -4,34 +4,48 @@ import XCTest
 import Combine
 
 @available(iOS 13.0, *)
-class NetworkWrapperTests: XCTestCase {
-    var networkWrapper: NetworkWrapperCombine!
-
-    override func setUp() {
-        networkWrapper = NetworkWrapperCombine(timeout: 10)
-    }
-
-    private var cancellables: [AnyCancellable] = []
+class NetworkWrapperCombineTests: XCTestCase {
+    let networkWrapper = NetworkWrapperCombine()
+    let usersUrl = URL(string: "https://jsonplaceholder.typicode.com/users")!
     
-    func testGetRequest() {
-        let url = URL(string: "https://jsonplaceholder.typicode.com/posts")!
-        let request = URLRequest(url: url)
-        let expectation = XCTestExpectation(description: "GET request should succeed")
-
-        networkWrapper.request(with: request)
+    func testRequestData() {
+        let expectation = self.expectation(description: "Request data")
+        
+        networkWrapper.request(with: URLRequest(url: usersUrl))
             .sink(receiveCompletion: { completion in
                 switch completion {
-                case .failure(let error):
-                    XCTFail(error.localizedDescription)
                 case .finished:
                     expectation.fulfill()
+                case .failure(let error):
+                    XCTFail(error.localizedDescription)
                 }
-            }, receiveValue: { posts in
-                XCTAssert(!posts.isEmpty)
+            }, receiveValue: { data in
+                XCTAssert(data.count > 0)
             })
             .store(in: &cancellables)
-
-        wait(for: [expectation], timeout: 5.0)
+        
+        waitForExpectations(timeout: 5, handler: nil)
     }
+    
+    func testRequestDecodable() {
+        let expectation = self.expectation(description: "Request decodable")
+        
+        networkWrapper.request(with: URLRequest(url: usersUrl))
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .finished:
+                    expectation.fulfill()
+                case .failure(let error):
+                    XCTFail(error.localizedDescription)
+                }
+            }, receiveValue: { users in
+                XCTAssert(users.count > 0)
+            })
+            .store(in: &cancellables)
+        
+        waitForExpectations(timeout: 5, handler: nil)
+    }
+    
+    private var cancellables = Set<AnyCancellable>()
 }
 

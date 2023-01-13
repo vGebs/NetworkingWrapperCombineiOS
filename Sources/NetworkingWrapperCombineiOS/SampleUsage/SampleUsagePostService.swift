@@ -10,7 +10,7 @@ import Combine
 
 @available(iOS 13.0, *)
 class PostService {
-    private let networkWrapper = NetworkWrapperCombine(timeout: 10)
+    private let networkWrapper = NetworkWrapperCombine()
     private let baseURL = URL(string: "https://jsonplaceholder.typicode.com")!
     
     func getPosts() -> AnyPublisher<[Post], Error> {
